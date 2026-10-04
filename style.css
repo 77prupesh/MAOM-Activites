@@ -1,0 +1,323 @@
+/* Change the colors here and the whole page updates */
+:root {
+  --bg: #15102e;
+  --text: #f1eefc;
+  --muted: #a9a1cf;
+  --teal: #2ee6c5;
+  --pink: #ff5fa2;
+  --gold: #ffd84d;
+  --glass: rgba(255, 255, 255, 0.07);
+  --glass-line: rgba(255, 255, 255, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Outfit", system-ui, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ---------- Floating background orbs ---------- */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  z-index: -1;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.orb-1 { width: 420px; height: 420px; background: var(--teal); top: -120px; left: -100px; }
+.orb-2 { width: 380px; height: 380px; background: var(--pink); bottom: -100px; right: -80px; animation-duration: 22s; }
+.orb-3 { width: 260px; height: 260px; background: #7a5cff; top: 45%; left: 55%; animation-duration: 26s; }
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 80px) scale(1.2); }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 90px 24px 50px;
+}
+
+/* Ripples spreading out like a thought */
+.rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: -1;
+}
+.rings span {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  margin: -110px 0 0 -110px;
+  border: 2px solid var(--teal);
+  border-radius: 50%;
+  opacity: 0;
+  animation: ripple 6s ease-out infinite;
+}
+.rings span:nth-child(2) { animation-delay: 2s; }
+.rings span:nth-child(3) { animation-delay: 4s; }
+
+@keyframes ripple {
+  0%   { transform: scale(0.4); opacity: 0.7; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* Title with a color sweep moving through it */
+.hero h1 {
+  margin: 0;
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 7vw, 4.2rem);
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--text), var(--teal), var(--pink), var(--text));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sweep 8s linear infinite, rise 1s ease-out both;
+}
+
+@keyframes sweep {
+  to { background-position: -300% 0; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.full-name {
+  margin: 10px 0 28px;
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+/* Highlighted group number with a glowing pulse */
+.group {
+  display: inline-block;
+  margin: 0;
+  padding: 10px 30px;
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #15102e;
+  background: var(--gold);
+  border-radius: 999px;
+  animation: glow 2.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 216, 77, 0.6); }
+  50%      { box-shadow: 0 0 0 16px rgba(255, 216, 77, 0); }
+}
+
+/* ---------- Sections ---------- */
+main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px 24px 70px;
+}
+
+section { margin-top: 44px; }
+
+section h2 {
+  margin: 0 0 18px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* ---------- Members ---------- */
+.members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.members li {
+  padding: 10px 20px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.members li:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal);
+}
+
+/* ---------- Activities ---------- */
+.activities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: item;
+  display: grid;
+  gap: 14px;
+}
+
+.activities li {
+  counter-increment: item;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-left: 4px solid var(--teal);
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+  transition: transform 0.25s, border-left-color 0.25s;
+}
+
+.activities li:hover {
+  transform: translateX(8px);
+  border-left-color: var(--pink);
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Activity numbers are added automatically */
+.info::before {
+  content: counter(item);
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  min-width: 2ch;
+  color: var(--teal);
+}
+
+.info h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+.info p  { margin: 2px 0 0; font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- Link button ---------- */
+.open {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  color: #15102e;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.open:hover { transform: scale(1.08); filter: brightness(1.1); }
+
+.open:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 560px) {
+  .activities li { flex-direction: column; align-items: flex-start; }
+}
+
+/* People who turn animations off in their device settings */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero h1 { color: var(--text); background: none; }
+}
+/* ---------- Shooting stars (left to right) ---------- */
+.stars {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.stars span {
+  position: absolute;
+  left: -160px;
+  width: 140px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(270deg, #fff, rgba(46, 230, 197, 0));
+  opacity: 0;
+  animation: shootRight 7s linear infinite;
+}
+
+/* bright head at the front (right end) */
+.stars span::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.8);
+}
+
+/* each star gets its own height, start time and speed */
+.stars span:nth-child(1)  { top: 4%;  animation-delay: 0s;   animation-duration: 6s; }
+.stars span:nth-child(2)  { top: 14%; animation-delay: 1.2s; animation-duration: 7s; }
+.stars span:nth-child(3)  { top: 24%; animation-delay: 2.4s; animation-duration: 5.5s; }
+.stars span:nth-child(4)  { top: 34%; animation-delay: 3.6s; animation-duration: 8s; }
+.stars span:nth-child(5)  { top: 44%; animation-delay: 4.8s; animation-duration: 6.5s; }
+.stars span:nth-child(6)  { top: 9%;  animation-delay: 6s;   animation-duration: 7.5s; }
+.stars span:nth-child(7)  { top: 19%; animation-delay: 0.6s; animation-duration: 6.8s; }
+.stars span:nth-child(8)  { top: 29%; animation-delay: 1.8s; animation-duration: 5.8s; }
+.stars span:nth-child(9)  { top: 39%; animation-delay: 3s;   animation-duration: 7.2s; }
+.stars span:nth-child(10) { top: 49%; animation-delay: 4.2s; animation-duration: 6.2s; }
+.stars span:nth-child(11) { top: 2%;  animation-delay: 5.4s; animation-duration: 8.2s; }
+
+@keyframes shootRight {
+  0%   { opacity: 0; transform: rotate(35deg) translateX(0); }
+  5%   { opacity: 1; }
+  35%  { opacity: 1; }
+  45%  { opacity: 0; transform: rotate(35deg) translateX(140vw); }
+  100% { opacity: 0; transform: rotate(35deg) translateX(140vw); }
+}
+/* video inside an activity: hidden until you hover */
+.activities li {
+  flex-wrap: wrap;
+  row-gap: 0;
+}
+
+.video-wrap {
+  flex-basis: 100%;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.4s ease, margin-top 0.4s ease;
+}
+
+/* show it when the cursor is on the card (or when a keyboard user tabs into it) */
+.activities li:hover .video-wrap,
+.activities li:focus-within .video-wrap {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: 12px;
+}
+
+.video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 10px;
+}
