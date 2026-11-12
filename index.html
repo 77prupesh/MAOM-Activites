@@ -10,6 +10,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Cover: group photo intro -->
+  <section class="cover" id="cover">
+    <p class="college">Amrita Vishwa Vidyapeetham, Coimbatore</p>
+    <div class="cover-title">MAOM Activities</div>
+    <p class="full-name">(Mastery Over Mind)</p>
+    <p class="group">Group 13</p>
+
+    <button class="scroll-hint" id="scrollHint" type="button" aria-label="Scroll down to see the activities">
+      <span>Scroll down</span>
+      <span aria-hidden="true">⌄</span>
+    </button>
+  </section>
 
   <!-- Animated background shapes (pure CSS, no JavaScript) -->
   <div class="orb orb-1"></div>
@@ -21,12 +33,94 @@
   <span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span>
 </div>
+<!-- Meditation silhouette made of a forest -->
+<div class="yoga" aria-hidden="true">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="figureClip">
+        <circle cx="100" cy="36" r="15"/>
+        <path d="M76 66 Q100 54 124 66 L132 128 L68 128 Z"/>
+        <path d="M76 66 Q56 100 50 140 L68 144 Q74 112 90 92 Z"/>
+        <path d="M124 66 Q144 100 150 140 L132 144 Q126 112 110 92 Z"/>
+        <path d="M20 160 Q30 128 70 126 L130 126 Q170 128 180 160 Q150 182 100 182 Q50 182 20 160 Z"/>
+      </clipPath>
+      <linearGradient id="forestBase" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1f7a43"/>
+        <stop offset="1" stop-color="#0b3d22"/>
+      </linearGradient>
+    </defs>
 
+    <g clip-path="url(#figureClip)">
+      <rect width="200" height="200" fill="url(#forestBase)"/>
+      <g id="forest"></g>
+    </g>
+  </svg>
+</div>
+
+<script>
+(function () {
+  const forest = document.getElementById('forest');
+  const NS = 'http://www.w3.org/2000/svg';
+  let seed = 11;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const greens = ['#1f8a4c', '#2e9e5b', '#37b36a', '#4fc97f', '#18733e', '#2a9455'];
+
+  function add(tag, attrs, parent) {
+    const el = document.createElementNS(NS, tag);
+    for (const key in attrs) el.setAttribute(key, attrs[key]);
+    parent.appendChild(el);
+    return el;
+  }
+
+  const trees = [];
+  for (let i = 0; i < 380; i++) {
+    trees.push({ x: rnd() * 200, y: 22 + rnd() * 170, r: rnd() });
+  }
+  trees.sort((a, b) => a.y - b.y);   // far trees first, near trees on top
+
+  trees.forEach((t) => {
+    const k = 0.55 + (t.y / 200) * 0.7 + t.r * 0.3;   // lower = closer = bigger
+    const w = 8 * k;
+    const h = 14 * k;
+    const color = greens[Math.floor(rnd() * greens.length)];
+    const tree = add('g', { transform: 'translate(' + t.x.toFixed(1) + ' ' + t.y.toFixed(1) + ')' }, forest);
+
+    add('rect', { x: -0.6 * k, y: -1.2 * k, width: 1.2 * k, height: 2 * k, fill: '#5b3a1e' }, tree);
+
+    if (t.r < 0.28) {
+      // round leafy tree
+      add('circle', { cx: 0, cy: -h * 0.55, r: w * 0.55, fill: color }, tree);
+      add('circle', { cx: -w * 0.25, cy: -h * 0.4, r: w * 0.4, fill: color }, tree);
+      add('circle', { cx: w * 0.25, cy: -h * 0.4, r: w * 0.4, fill: color }, tree);
+    } else {
+      // pine tree: three stacked triangles
+      [[0.58, 0.08, 0.5], [0.8, 0.34, 0.4], [1, 0.58, 0.28]].forEach((tier) => {
+        const apex = -h * tier[0];
+        const base = -h * tier[1];
+        const half = w * tier[2];
+        add('polygon', { points: '0,' + apex + ' ' + half + ',' + base + ' ' + (-half) + ',' + base, fill: color }, tree);
+      });
+    }
+  });
+})();
+</script>
+<!-- Hanging Christmas trees -->
+<div class="hangers hangers-left">
+  <div class="hanger" style="--len: 60px"><span>🎄</span></div>
+  <div class="hanger" style="--len: 140px"><span>🎄</span></div>
+  <div class="hanger" style="--len: 95px"><span>🎄</span></div>
+</div>
+<div class="hangers hangers-right">
+  <div class="hanger" style="--len: 100px"><span>🎄</span></div>
+  <div class="hanger" style="--len: 55px"><span>🎄</span></div>
+  <div class="hanger" style="--len: 130px"><span>🎄</span></div>
+</div>
   <header class="hero">
     <div class="rings">
       <span></span><span></span><span></span>
     </div>
     <h1>MAOM Activities</h1>
+    <p class="college">Amrita Vishwa Vidyapeetham, Coimbatore</p>
     <p class="full-name">(Mastery Over Mind)</p>
     <p class="group">Group 13</p>
   </header>
@@ -48,27 +142,223 @@
       <h2>Activities</h2>
       <ol class="activities">
 
-        <!-- ===== COPY THIS WHOLE <li> BLOCK TO ADD A NEW ACTIVITY ===== -->
-        <li>
-          <div class="info">
-            <h3>Activity 1</h3>
-            <h4>ANIMATION</h4>
-            <p>Given on 02 Oct 2026</p>
-          </div>
-          <a class="open" href="https://youtu.be/OSTxHyTdVN0?si=cYGY_FLTnTTjZ9pQ" target="_blank" rel="noopener">Open link</a>
-        <div class="video-wrap">
-          <iframe class="video"
-            src="https://www.youtube.com/embed/OSTxHyTdVN0"
-            title="Activity 1 video"
-            allowfullscreen>
-            </iframe>
-        </div>
-        </li>
-        <!-- ===== END OF BLOCK ===== -->
+  <!-- Activity 1: animation (video) -->
+  <li>
+    <div class="info">
+      <div class="text">
+        <h3>Activity 1</h3>
+        <h4>Animation Project</h4>
+        <p>Given on 02 Oct 2026</p>
+      </div>
+    </div>
+    <a class="open" href="https://youtu.be/OSTxHyTdVN0?si=cYGY_FLTnTTjZ9pQ" target="_blank" rel="noopener">Open link</a>
+    <div class="video-wrap">
+      <iframe class="video" src="https://www.youtube.com/embed/OSTxHyTdVN0" title="Activity 1 video" allowfullscreen></iframe>
+    </div>
+  </li>
 
-      </ol>
+<!-- Activity 2 -->
+<li data-viewer>
+  <div class="info">
+    <div class="text">
+      <h3>Activity 2</h3>
+      <h4>Andhra Pradesh</h4>
+    </div>
+  </div>
+  <button type="button" class="open view-btn">View image</button>
+  <div class="video-wrap img-wrap">
+    <button type="button" aria-label="Open image fullscreen">
+      <img src="andhra-pradesh.jpeg" alt="Andhra Pradesh">
+    </button>
+  </div>
+</li>
+
+<!-- Activity 3 -->
+<li data-viewer>
+  <div class="info">
+    <div class="text">
+      <h3>Activity 3</h3>
+      <h4>Chart Work</h4>
+    </div>
+  </div>
+  <button type="button" class="open view-btn">View image</button>
+  <div class="video-wrap img-wrap">
+    <button type="button" aria-label="Open image fullscreen">
+      <img src="chart-work.jpeg" alt="Chart Work">
+    </button>
+  </div>
+</li>
+
+<!-- Activity 4 -->
+<li data-viewer>
+  <div class="info">
+    <div class="text">
+      <h3>Activity 4</h3>
+      <h4>Unit 5</h4>
+    </div>
+  </div>
+  <button type="button" class="open view-btn">View image</button>
+  <div class="video-wrap img-wrap">
+    <button type="button" aria-label="Open image fullscreen">
+      <img src="unit-5.jpeg" alt="Unit 5">
+    </button>
+  </div>
+</li>
+
+<!-- Activity 5 -->
+<li data-viewer>
+  <div class="info">
+    <div class="text">
+      <h3>Activity 5</h3>
+      <h4>WhatsApp Image</h4>
+    </div>
+  </div>
+  <button type="button" class="open view-btn">View image</button>
+  <div class="video-wrap img-wrap">
+    <button type="button" aria-label="Open image fullscreen">
+      <img src="whatsapp-image.jpeg" alt="WhatsApp Image">
+    </button>
+  </div>
+</li>
+
+<!-- Activity 6 -->
+<li data-viewer>
+  <div class="info">
+    <div class="text">
+      <h3>Activity 6</h3>
+      <h4>White Flower Meditation</h4>
+    </div>
+  </div>
+  <button type="button" class="open view-btn">View image</button>
+  <div class="video-wrap img-wrap">
+    <button type="button" aria-label="Open image fullscreen">
+      <img src="white-flower-meditation.jpeg" alt="White Flower Meditation">
+    </button>
+  </div>
+</li>
+
+</ol>
     </section>
   </main>
+  <!-- Image viewer -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Close">✕</button>
+    <button class="lb-btn lb-full" id="lbFull" type="button" aria-label="Toggle fullscreen">⛶</button>
+    <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Previous image">‹</button>
+    <img id="lbImg" alt="">
+    <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Next image">›</button>
+    <div class="lb-count" id="lbCount"></div>
+  </div>
+  
+  <script>
+  const cover = document.getElementById('cover');
+  const hint = document.getElementById('scrollHint');
+  let isOpen = false;
+  let busy = false;
+  let touchStartY = 0;
 
+  document.body.classList.add('locked');
+
+  function openCover() {
+    if (isOpen || busy) return;
+    busy = true;
+    isOpen = true;
+    cover.classList.add('lifted');
+    document.body.classList.remove('locked');
+    setTimeout(() => { busy = false; }, 1100);
+  }
+
+  function closeCover() {
+    if (!isOpen || busy) return;
+    busy = true;
+    isOpen = false;
+    window.scrollTo(0, 0);
+    cover.classList.remove('lifted');
+    document.body.classList.add('locked');
+    setTimeout(() => { busy = false; }, 1100);
+  }
+
+  window.addEventListener('wheel', (e) => {
+    if (!isOpen && e.deltaY > 0) openCover();
+    else if (isOpen && window.scrollY <= 0 && e.deltaY < 0) closeCover();
+  }, { passive: true });
+
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    const dy = touchStartY - e.touches[0].clientY;
+    if (!isOpen && dy > 30) openCover();
+    else if (isOpen && window.scrollY <= 0 && dy < -30) closeCover();
+  }, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (!isOpen && ['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault();
+      openCover();
+    }
+  });
+
+  hint.addEventListener('click', openCover);
+  /* ---------- Image viewer ---------- */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCount = document.getElementById('lbCount');
+const lbFull = document.getElementById('lbFull');
+let items = [];
+let idx = 0;
+
+if (!lb.requestFullscreen) lbFull.style.display = 'none';
+
+document.querySelectorAll('[data-viewer]').forEach((card) => {
+  const img = card.querySelector('img');
+  card.querySelectorAll('.view-btn, .img-wrap button').forEach((btn) => {
+    btn.addEventListener('click', () => openViewer([img], 0));
+  });
+});
+
+function showImage() {
+  lbImg.src = items[idx].src;
+  lbImg.alt = items[idx].alt;
+  const many = items.length > 1;
+  document.getElementById('lbPrev').style.display = many ? '' : 'none';
+  document.getElementById('lbNext').style.display = many ? '' : 'none';
+  lbCount.textContent = many ? (idx + 1) + ' / ' + items.length : '';
+} 
+function openViewer(list, i) {
+  items = list;
+  idx = i;
+  showImage();
+  lb.classList.add('open');
+}
+function closeViewer() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  lb.classList.remove('open');
+}
+function step(n) {
+  idx = (idx + n + items.length) % items.length;
+  showImage();
+}
+function toggleFull() {
+  if (!lb.requestFullscreen) return;
+  if (document.fullscreenElement) document.exitFullscreen();
+  else lb.requestFullscreen();
+}
+
+document.getElementById('lbClose').addEventListener('click', closeViewer);
+document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+document.getElementById('lbNext').addEventListener('click', () => step(1));
+lbFull.addEventListener('click', toggleFull);
+lb.addEventListener('click', (e) => { if (e.target === lb) closeViewer(); });
+
+window.addEventListener('keydown', (e) => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeViewer();
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'f' || e.key === 'F') toggleFull();
+});
+</script>
 </body>
 </html>

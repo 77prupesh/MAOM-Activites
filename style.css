@@ -103,6 +103,13 @@ body {
   font-size: 1.2rem;
   color: var(--muted);
 }
+.college {
+  margin: 14px 0 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
 
 /* Highlighted group number with a glowing pulse */
 .group {
@@ -208,6 +215,13 @@ section h2 {
 }
 
 .info h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+.info h4 {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--pink);
+}
 .info p  { margin: 2px 0 0; font-size: 0.9rem; color: var(--muted); }
 
 /* ---------- Link button ---------- */
@@ -320,4 +334,363 @@ section h2 {
   aspect-ratio: 16 / 9;
   border: 0;
   border-radius: 10px;
+}
+
+/* On touch screens (no hover), show the video by default */
+@media (hover: none) {
+  .video-wrap {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+}
+/* ---------- Hanging Christmas trees ---------- */
+.hangers {
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+.hangers-left  { left: 16px; }
+.hangers-right { right: 16px; }
+
+.hanger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: sway 3.2s ease-in-out infinite alternate;
+}
+
+/* the string */
+.hanger::before {
+  content: "";
+  width: 2px;
+  height: var(--len);
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
+}
+
+/* the tree */
+.hanger span {
+  font-size: 4rem;
+  line-height: 1;
+  animation: twinkle 2s ease-in-out infinite alternate;
+}
+
+/* each tree swings at its own speed */
+.hanger:nth-child(2) { animation-duration: 3.8s; animation-delay: -1s; }
+.hanger:nth-child(3) { animation-duration: 2.8s; animation-delay: -2s; }
+.hanger:nth-child(2) span { animation-delay: -0.7s; }
+.hanger:nth-child(3) span { animation-delay: -1.3s; }
+
+@keyframes sway {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(7deg); }
+}
+
+@keyframes twinkle {
+  from { filter: drop-shadow(0 0 3px rgba(255, 216, 77, 0.2)); }
+  to   { filter: drop-shadow(0 0 14px rgba(255, 216, 77, 0.9)); }
+}
+
+/* hide on small screens so they don't cover the content */
+@media (max-width: 900px) {
+  .hangers { display: none; }
+}
+/* ---------- Cover: group photo intro ---------- */
+body.locked { overflow: hidden; }
+
+
+.cover {
+  position: fixed;
+  inset: 0;
+  margin: 0;              /* NEW: cancels the section margin */
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background:
+    linear-gradient(rgba(21, 16, 46, 0.55), rgba(21, 16, 46, 0.82)),
+    url("group-photo.jpg") center 40% / cover no-repeat,
+    #15102e;
+  transition: transform 1.1s cubic-bezier(0.77, 0, 0.18, 1), visibility 0s;
+}
+
+
+/* the slide-up; it is hidden only after it has left the screen */
+.cover.lifted {
+  transform: translateY(-100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 1.1s cubic-bezier(0.77, 0, 0.18, 1), visibility 0s linear 1.1s;
+}
+
+.cover > * { animation: rise 1s ease-out both; }
+.cover > :nth-child(2) { animation-delay: 0.15s; }
+.cover > :nth-child(3) { animation-delay: 0.3s; }
+.cover > :nth-child(4) { animation-delay: 0.45s; }
+
+.cover .college { text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7); }
+
+.cover-title {
+  margin: 14px 0 0;
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 7vw, 4.2rem);
+  line-height: 1.1;
+  color: var(--text);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.65);
+}
+
+.cover .full-name { text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7); color: var(--text); }
+.cover .group { margin-top: 6px; }
+
+/* "Scroll down" hint at the bottom */
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 0;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: none !important;
+}
+.scroll-hint span:last-child {
+  font-size: 1.8rem;
+  line-height: 1;
+  animation: bob 1.6s ease-in-out infinite;
+}
+.scroll-hint:focus-visible { outline: 3px solid var(--text); outline-offset: 6px; border-radius: 8px; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+/* ---------- Image gallery ---------- */
+.gallery {
+  flex-basis: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.gallery button {
+  padding: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 10px;
+  cursor: zoom-in;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.gallery button:hover { border-color: var(--teal); transform: translateY(-3px); }
+.gallery button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+.gallery button:hover img { transform: scale(1.08); }
+
+/* ---------- Image viewer ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 7, 25, 0.95);
+}
+.lightbox.open { display: flex; }
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 86vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+}
+
+.lb-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: var(--text);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.lb-btn:hover { background: rgba(255, 255, 255, 0.18); transform: scale(1.08); }
+.lb-btn:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+.lb-close { top: 18px; right: 18px; }
+.lb-full  { top: 18px; right: 74px; }
+.lb-prev  { left: 18px; top: 50%; margin-top: -23px; font-size: 2rem; }
+.lb-next  { right: 18px; top: 50%; margin-top: -23px; font-size: 2rem; }
+
+.lb-count {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+.gallery.single { grid-template-columns: minmax(180px, 280px); }
+/* ---------- Image inside an activity (hover reveal, like the video) ---------- */
+.view-btn {
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.img-wrap button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.img-wrap img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+/* ---------- Glowing meditation silhouette ---------- */
+.yoga {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(78vmin, 620px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  z-index: -1;            /* behind all content */
+  pointer-events: none;
+}
+
+.yoga svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.yoga .body * { fill: url(#yogaGrad); }
+
+.yoga .aura-bg { animation: auraPulse 6s ease-in-out infinite; }
+
+.yoga .halo {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 9;
+  opacity: 0.8;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin 24s linear infinite;
+}
+
+.yoga .ripple {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple-out 4.5s ease-out infinite;
+}
+.yoga .ripple.r2 { animation-delay: 2.25s; }
+
+.yoga .dots circle {
+  fill: #fff;
+  opacity: 0.2;
+  animation: dot 2.8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 14px rgba(46, 230, 197, 0.55))
+            drop-shadow(0 0 40px rgba(255, 95, 162, 0.35));
+  }
+  50% {
+    transform: translateY(-14px) scale(1.04);
+    filter: drop-shadow(0 0 26px rgba(46, 230, 197, 0.9))
+            drop-shadow(0 0 70px rgba(255, 95, 162, 0.6));
+  }
+}
+
+@keyframes auraPulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes ripple-out {
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes dot {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.5); }
+}
+/* ---------- Meditation silhouette (forest) ---------- */
+.yoga {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(60vmin, 480px);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 22px rgba(61, 220, 132, 0.6));
+}
+
+.yoga svg {
+  display: block;
+  width: 100%;
+  opacity: 0.75;
+  will-change: transform;
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
 }
